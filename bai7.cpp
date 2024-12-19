@@ -8,7 +8,7 @@ class NGUOI {
 		int maso, luong;
 	public:
 		void input() {
-			cout << "\nNhap ma so: ";cin >> maso;
+			cout << "\nNhap ma so: "; cin >> maso;
 			fflush(stdin);
 			cout << "Nhap ho ten: "; getline(cin,hoten);
 			cout << "Nhap luong: "; cin >> luong;

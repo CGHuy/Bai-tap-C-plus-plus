@@ -5,69 +5,114 @@ using namespace std;
 class matrix {
 	public:
 		int m, n;
-		int **arr; // ** Khai bao con tro mang 2 chieu
+		int **x; // ** Khai bao con tro mang 2 chieu
 	public:
-		matrix() : m(0), n(0), arr {}
+		matrix() {
+			m = 0;
+			n = 0;
+		}
 
         matrix(int a, int b) : m(a), n(b) {
-            arr = new int*[m];
+            x = new int*[m];
             for (int i = 0; i < m; i++) {
-                arr[i] = new int[n]{0};
+                x[i] = new int[n]{0};
             }
         }
         
         ~matrix() {
             for (int i = 0; i < m; i++) {
-                delete[] arr[i];
+                delete[] x[i];
             }
-            delete[] arr;
+            delete[] x;
         }
 		
 		void input() {
-			cout << "\nNhap kich thuoc ma tran\n";
-			cout << "Nhap so hang: "; cin >> m;
-			cout << "Nhap so cot: "; cin >> n;
-			
-			arr = new int*[m];
-            for (int i = 0; i < m; i++) {
-                arr[i] = new int[n];
-            }
-			
-			cout << "Nhap phan tu cua ma tran\n";
 			for (int i = 0; i < m; i++) {
 				for (int j = 0; j < n; j++) {
 					cout << "a[" << i << "][" << j << "] = ";
-					cin >> arr[i][j];
+					cin >> x[i][j];
 				}
 			}
 		}
+		
 		void output() {
 			for (int i = 0; i < m; i++) {
 				for (int j = 0; j < n; j++) {
-					cout << arr[i][j];
-					cout << "\t";
+					cout << x[i][j] << "\t";
 				}
 				cout << "\n";
 			}
 		}
 		friend matrix cong(matrix &a, matrix &b);
-		friend int tong_hangcotk(matrix &a);
+		friend int tong_hangcotk(matrix &a, int &k);
 		friend int tong_4duong(matrix &a);
 };
 
 matrix cong(matrix &a, matrix &b) {
-	
+	if ((a.n != b.n) || (a.m != b.m)) {
+		cout << "Hai ma tran khong cung cap";
+		return matrix(); // tra ve matrix 0x0
+	}
+	matrix kq;
+	for (int i = 0; i < a.m; i++) {
+		for (int j = 0; j < a.n; j++) {
+			kq.x[i][j] = a.x[i][j] + b.x[i][j];
+		}
+	}
+	return kq;
+}
+
+int tong_hangcotk(matrix &a, int &k) {
+	if (k < a.m || k < a.n) {
+		cout << "K phai lon hon m va n";
+	}
+	int tong = 0;
+	for (int i = 0; i < a.m; i++) {
+		for (int j = 0; j < a.n; j++) {
+			if (i == k || j == k) {
+				tong += a.x[i][j];
+			}
+		}
+	}
+	return tong;
+}
+
+int tong_4duong(matrix &a) {
+	int tong;
+	for (int i = 0; i < a.m; i++) {
+		tong += a.x[i][0];
+		if (a.n > 1) {
+			tong += a.x[i][a.n-1];
+		}
+	}
+	for (int i = 1; i < a.n-1; i++) {
+		tong += a.x[0][i];
+		if (a.m > 1) {
+			tong += a.x[a.m-1][i];
+		}
+	}
+	return tong;
 }
 
 main() {
 	matrix A,B,C;
-	cout << "NHAP MA TRAN A";
+	int m,n,k;
+	cout << "Nhap so hang m = "; cin >> m;
+	cout << "Nhap so cot n = "; cin >> n;
+	cout << "\nNhap ma tran A";
 	A.input();
-	cout << "MA TRAN A LA";
+	cout << "\nMa tran A la";
 	A.output();
-	cout << "NHAP MA TRAN B";
+	cout << "\nNhap ma tran B";
 	B.input();
-	cout << "MA TRAN B LA";
+	cout << "\nMa tran B la";
 	B.output();
+	cout << "\nMa tran A + B la";
+	C = cong(A,B);
+	C.output();
+	cout << "Nhap k: "; cin >> k;
+	tong_hangcotk(C,k);
+	tong_4duong(C);
+	
 	getch();
 }
