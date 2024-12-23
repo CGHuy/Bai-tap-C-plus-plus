@@ -1,160 +1,88 @@
 #include <iostream>
 #include <conio.h>
+#include <iomanip> // dung lenh setfill
 using namespace std;
 
 class date {
 	private:
-		int d,m,y;
+		int d, m, y;
 	public:
 		date() {
 			d = 1;
 			m = 1;
 			y = 1;
 		}
-		date(int a, int b, int c) {
-			d = a;
-			m = b;
-			y = c;
+		date(int d, int m, int y) {
+			d = d;
+			m = m;
+			y = y;
 		}
-		~date() {
-			d = 0;
-			m = 0;
-			y = 0;
+		~date() {}
+		bool namnhuan(int y) {
+			return (y % 4 == 0 && y % 100 != 0) || (y % 400 == 0);
+		}
+		int chuanhoangay(int m, int y) {
+			switch (m) {
+				case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+					return 31;
+				case 4: case 6: case 9: case 11:
+					return 30;
+				case 2:
+					return namnhuan(y) ? 29 : 28;
+				default:
+					return 0;
+			}
+		}
+		void chuanhoa() {
+			while (d > chuanhoangay(m,y)) { // dung while trong truong hop d rat lon phai chay nhieu lan
+				d = d - chuanhoangay(m,y);
+				m++;
+				if (m > 12) {
+					m = 1;
+					y++;
+				}
+			}
+			while (d < 1) { // dung while trong truong hop d rat lon phai chay nhieu lan
+				m--;
+				if (m < 1) {
+					m = 12;
+					y--;
+				}
+				d = d + chuanhoangay(m,y);
+			}
 		}
 		void input() {
-			do {
-				cout << "Nhap ngay: "; cin >> d;
-			}
-			while (d<1||d>31);
-			do {
-				cout << "Nhap thang: "; cin >> m;
-			}
-			while (m<1||m>12);
-			do {
-				cout << "Nhap nam: "; cin >> y;
-			}
-			while (y<1||y>9999);
+			cout << "Nhap ngay: "; cin >> d;
+			cout << "Nhap thang: "; cin >> m;
+			cout << "Nhap nam: "; cin >> y;
+			chuanhoa();
 		}
 		void output() {
-			cout << d << "/" << m << "/" << y;
+			cout << setfill('0') << setw(2) << d << "/";
+			cout << setfill('0') << setw(2) << m << "/";
+			cout << setfill('0') << setw(4) << y;
 		}
-		int getd() {
-			return d;
+		date operator ++ (int) {
+			date kq = *this;
+			kq.d++;
+			kq.chuanhoa();
+			return kq;
 		}
-		int getm() {
-			return m;
+		date operator -- (int) {
+			date kq = *this;
+			kq.d--;
+			kq.chuanhoa();
+			return kq;
 		}
-		int gety() {
-			return y;
-		}
-		date chuanhoa();
-		date operator ++ (int);
-		date operator -- (int);
 };
 
-date date::operator ++ (int) {
-	date kq;
-	kq.d = getd() + 1;
-	if (getm() == 1 || getm() == 3 || getm() == 5 || getm() == 7 || getm() == 8 || getm() == 10 || getm() == 12) {
-		if (kq.d > 31 && getm() != 12) {
-			kq.d = 1;
-			kq.m = getm() + 1;
-			kq.y = gety();
-		} else if (kq.d > 31 && getm() == 12) {
-			kq.d = 1;
-			kq.m = 1;
-			kq.y = gety() + 1;
-		} else {
-			kq.m = getm();
-			kq.y = gety();
-		}
-	} else if (getm() == 4 || getm() == 6 || getm() == 9 || getm() == 11) {
-		if (kq.d > 30) {
-			kq.d = 1;
-			kq.m = getm() + 1;
-			kq.y = gety();
-		} else {
-			kq.m = getm();
-			kq.y = gety();
-		}
-	} else if (getm() == 2) {
-		if (gety() % 400 == 0 || (gety() % 4 == 0 && gety() % 100 != 0)) {
-			if (kq.d > 29) {
-				kq.d = 1;
-				kq.m = getm() + 1;
-				kq.y = gety();
-			} else {
-				kq.m = getm();
-				kq.y = gety();
-			}
-		} else {
-			if (kq.d > 28) {
-				kq.d = 1;
-				kq.m = getm() + 1;
-				kq.y = gety();
-			} else {
-				kq.m = getm();
-				kq.y = gety();
-			}
-		}
-	}
-	return kq;
-}
-
-date date::operator -- (int) {
-	date kq;
-	kq.d = getd() - 1;
-	if (getm() == 1 || getm() == 5 || getm() == 7 || getm() == 10 || getm() == 12) {
-		if (kq.d < 1 && getm() == 1) {
-			kq.d = 31;
-			kq.m = 12;
-			kq.y = gety() - 1;
-		} else if (kq.d < 1 && getm() != 1) {
-			kq.d = 30;
-			kq.m = getm() - 1;
-			kq.y = gety();
-		} else {
-			kq.m = getm();
-			kq.y = gety();
-		}
-	} else if (getm() == 2 || getm() == 4 || getm() == 6 || getm() == 8 || getm() == 9 || getm() == 11) {
-		if (kq.d < 1) {
-			kq.d = 31;
-			kq.m = getm() - 1;
-			kq.y = gety();
-		} else {
-			kq.m = getm();
-			kq.y = gety();
-		}
-	} else if (getm() == 3) {
-		if (gety() % 400 == 0 || (gety() % 4 == 0 && gety() % 100 == 0)) {
-			if (kq.d < 1) {
-				kq.d = 29;
-				kq.m = getm() - 1;
-				kq.y = gety();
-			} else {
-				kq.m = getm();
-				kq.y = gety();
-			}
-		} else {
-			if (kq.d < 1) {
-				kq.d = 28;
-				kq.m = getm() - 1;
-				kq.y = gety();
-			} else {
-				kq.m = getm();
-				kq.y = gety();
-			}
-		}
-	}
-	return kq;
-}
-
 main() {
-	date a;
+	date a, tang, giam;
 	cout << "NHAP NGAY\n"; a.input();
-	cout << "NGAY DA NHAP: "; a.output();
-	cout << "\nNGAY TIEP THEO: "; a++.output();
-	cout << "\nNGAY TRUOC DO: "; a--.output();
+	cout << "NGAY DA NHAP LA: "; a.output();
+	tang = a++;
+	giam = a--;
+	cout << "\nNGAY TIEP THEO LA: "; tang.output();
+	cout << "\nNGAY TRUOC DO LA: "; giam.output();
 	getch();
 }
