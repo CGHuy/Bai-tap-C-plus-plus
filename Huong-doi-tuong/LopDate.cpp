@@ -17,7 +17,11 @@ class date {
 			m = m;
 			y = y;
 		}
-		~date() {}
+		~date() {
+			d = 1;
+			m = 1;
+			y = 1;
+		}
 		bool namnhuan(int y) {
 			return (y % 4 == 0 && y % 100 != 0) || (y % 400 == 0);
 		}
@@ -52,7 +56,7 @@ class date {
 			}
 		}
 		void input() {
-			cout << "Nhap ngay: "; cin >> d;
+			cout << "\nNhap ngay: "; cin >> d;
 			cout << "Nhap thang: "; cin >> m;
 			cout << "Nhap nam: "; cin >> y;
 			chuanhoa();
@@ -78,7 +82,7 @@ class date {
 
 main() {
 	date a, tang, giam;
-	cout << "NHAP NGAY\n"; a.input();
+	cout << "NHAP NGAY"; a.input();
 	cout << "NGAY DA NHAP LA: "; a.output();
 	tang = a++;
 	giam = a--;

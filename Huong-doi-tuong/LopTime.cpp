@@ -18,7 +18,11 @@ class time {
 			m = m;
 			s = s;
 		}
-		~time() {}
+		~time() {
+			h = 0;
+			m = 0;
+			s = 0;
+		}
 		void chuanhoa() {
 			if (s >= 60) {
 				m = m + s / 60;
