@@ -13,21 +13,6 @@ NODE *makeNode(int x) {
 	return newNode;
 }
 
-// Kiem tra rong
-bool empty(NODE *head) {
-	return head == NULL;
-}
-
-// Kiem tra do dai cua danh sach
-int size(NODE *a) {
-	int count = 0;
-	while (a != NULL) {
-		++count;
-		a = a->next;
-	}
-	return count;
-}
-
 // Duyet danh sach
 void scan(NODE *a) {
 	while (a != NULL) {
@@ -36,41 +21,41 @@ void scan(NODE *a) {
 	}
 }
 
-void pushFront(NODE **head, int x) {
+void pushFront(NODE &*head, int x) {
 	NODE *newNode = makeNode(x);
 	newNode->next = *head;
-	*head = newNode;
+	head = newNode;
 }
 
-void insert_After(NODE **head, NODE *pM, int x) {
+void insert_After(NODE &*head, NODE *M, int x) {
 	NODE *newNode = makeNode(x);
-	if (pM == NULL) {
+	if (M == NULL) {
 		cout << "\nKhong the them duoc";
 		return;
 	}
-	if (*head == NULL) { // list chua co phan tu
+	if (head == NULL) { // list chua co phan tu
 		pushFront(head,x);
 		return;
 	} else { // them newNode
-		newNode->next = pM->next;
-		pM->next = newNode;
+		newNode->next = M->next;
+		M->next = newNode;
 	}
 }
 
-void insert_Before(NODE **head, NODE *pM, int x) {
+void insert_Before(NODE &*head, NODE *M, int x) {
 	NODE *newNode = makeNode(x);
-	if (pM == NULL) {
+	if (M == NULL) {
 		cout << "\nKhong the them duoc";
 		return;
 	}
-	if (*head == NULL) { // neu list rong thi pushFront luon
+	if (head == NULL) { // neu list rong thi pushFront luon
 		pushFront(head,x);
 		return;
 	} else { // them newNode nhu insert_After va doi du lieu cua newNode va M
-		newNode->next = pM->next;
-		pM->next = newNode;
-		newNode->data = pM->data;
-		pM->data = x;
+		newNode->next = M->next;
+		M->next = newNode;
+		newNode->data = M->data;
+		M->data = x;
 	}
 }
 
@@ -126,13 +111,13 @@ bool search(NODE *head, int x) {
 	}
 }
 
-void xoa(NODE **head, NODE *p) {
-	if (*head == NULL || p == NULL) {
+void xoa(NODE &*head, NODE *p) {
+	if (head == NULL || p == NULL) {
 		cout << "\nDanh sach rong hoac con tro rong";
 		return;
 	}
-	if (*head == p) {
-		*head = p->next;
+	if (head == p) {
+		head = p->next;
 		delete p;
 		return;
 	}

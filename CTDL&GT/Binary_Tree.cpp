@@ -31,7 +31,6 @@ BTNode *insert(BTNode *root, int x) {
 
 BTNode *find(BTNode *root, int x) {
 	if (root == NULL) {
-		cout << "\nCay rong";
 		return NULL;
 	}
 	if (x < root->data) {
@@ -45,7 +44,6 @@ BTNode *find(BTNode *root, int x) {
 
 BTNode *findMin(BTNode *root) {
 	if (root == NULL) {
-		cout << "\nCay rong";
 		return NULL;
 	}
 	while (root->left != NULL) {
@@ -72,6 +70,22 @@ void preOrder(BTNode *root) {
 	}
 }
 
+void inOder(BTNode *root) {
+	if (root != NULL) {
+		inOder(root->left);
+		cout << root->data << " ";
+		inOder(root->right);
+	}
+}
+
+void postOder(BTNode *root) {
+	if (root != NULL) {
+		postOder(root->left);
+		postOder(root->right);
+		cout << root->data << " ";
+	}
+}
+
 int main() {
 	BTNode *a = NULL;
 	a = insert(a, 9);
@@ -80,9 +94,21 @@ int main() {
 	a = insert(a, 7);
 	a = insert(a, 10);
 
-	cout << "\nKet qua duyet cay: ";
+	cout << "\nKet qua duyet cay theo thu tu truoc la: ";
 	preOrder(a);
-
+	cout << "\nKet qua duyet cay theo thu tu giua la: ";
+	inOder(a);
+	cout << "\nKet qua duyet cay theo thu tu sau la: ";
+	postOder(a);
+	
+	int x = 11;
+	BTNode *kq = find(a,x);
+	if (kq != NULL) {
+		cout << "\nTim thay gia tri " << x << " trong cay";
+	} else {
+		cout << "\nKhong tim thay gia tri " << x << " trong cay";
+	}
+	
 	return 0;
 }
 
