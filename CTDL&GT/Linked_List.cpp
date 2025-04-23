@@ -1,10 +1,10 @@
 #include <iostream>
 using namespace std;
 
-typedef struct NODE {
+struct NODE {
 	int data;
 	NODE *next;
-} NODE;
+};
 
 NODE *makeNode(int x) {
 	NODE *newNode = new NODE();
@@ -21,15 +21,29 @@ void scan(NODE *a) {
 	}
 }
 
-void pushFront(NODE &*head, int x) {
+void pushFront(NODE *&head, int x) {
 	NODE *newNode = makeNode(x);
-	newNode->next = *head;
+	newNode->next = head;
 	head = newNode;
 }
 
-void insert_After(NODE &*head, NODE *M, int x) {
+void pushAfter(NODE *&head, int x) {
 	NODE *newNode = makeNode(x);
-	if (M == NULL) {
+	if (head == NULL) {
+		head = newNode;
+		return;
+	}
+	NODE *temp = head;
+	while (temp->next != NULL) {
+		temp = temp->next;
+	}
+	temp->next = newNode;
+	newNode->next = NULL;
+}
+
+void insertAfter(NODE *&head, NODE *p, int x) {
+	NODE *newNode = makeNode(x);
+	if (p == NULL) {
 		cout << "\nKhong the them duoc";
 		return;
 	}
@@ -37,34 +51,17 @@ void insert_After(NODE &*head, NODE *M, int x) {
 		pushFront(head,x);
 		return;
 	} else { // them newNode
-		newNode->next = M->next;
-		M->next = newNode;
+		newNode->next = p->next;
+		p->next = newNode;
 	}
 }
 
-void insert_Before(NODE &*head, NODE *M, int x) {
-	NODE *newNode = makeNode(x);
-	if (M == NULL) {
-		cout << "\nKhong the them duoc";
-		return;
-	}
-	if (head == NULL) { // neu list rong thi pushFront luon
-		pushFront(head,x);
-		return;
-	} else { // them newNode nhu insert_After va doi du lieu cua newNode va M
-		newNode->next = M->next;
-		M->next = newNode;
-		newNode->data = M->data;
-		M->data = x;
-	}
-}
-
-void addTrcViTriK(NODE **head, int k, int x) {
+void insertAfterK(NODE *&head, int k, int x) {
 	if (k < 1) {
 		cout << "\nKhong ton tai vi tri K";
 		return;
 	}
-	NODE *temp = *head;
+	NODE *temp = head;
 	for (int i = 1; i < k; i++) {
 		if (temp->next == NULL) {
 			cout << "\nVi tri vuot qua do dai danh sach";
@@ -72,56 +69,20 @@ void addTrcViTriK(NODE **head, int k, int x) {
 		}
 		temp = temp->next;
 	}
-	insert_Before(head,temp,x);
+	insertAfter(head,temp,x);
 }
 
-void addSauViTriK(NODE **head, int k, int x) {
-	if (k < 1) {
-		cout << "\nKhong ton tai vi tri K";
-		return;
-	}
-	NODE *temp = *head;
-	for (int i = 1; i < k; i++) {
-		if (temp->next == NULL) {
-			cout << "\nVi tri vuot qua do dai danh sach";
-			return;
-		}
-		temp = temp->next;
-	}
-	insert_After(head,temp,x);
-}
-
-bool search(NODE *head, int x) {
-	if (head == NULL) {
-		cout << "\nDanh sach lien ket rong";
-		return false;
-	}
-	if (head != NULL) {
-		int index = 1;
-		while (head->next != NULL && head->data != x) { // head != NULL phai kiem tra truoc
-			head = head->next;
-			index++;
-		}
-		if (head->next == NULL) {
-			cout << "\nKhong ton tai phan tu " << x;
-			return false;
-		}
-		cout << "\nTon tai phan tu " << x << " o vi tri thu " << index;
-		return true;
-	}
-}
-
-void xoa(NODE &*head, NODE *p) {
+void xoa(NODE *&head, NODE *p) {
 	if (head == NULL || p == NULL) {
 		cout << "\nDanh sach rong hoac con tro rong";
 		return;
 	}
-	if (head == p) {
+	if (p == head) {
 		head = p->next;
 		delete p;
 		return;
 	}
-	NODE *temp = *head;
+	NODE *temp = head;
 	while (temp->next != NULL && temp->next != p) {
 		temp = temp->next;
 	}
@@ -133,12 +94,11 @@ void xoa(NODE &*head, NODE *p) {
 	delete p; 
 }
 
-void xoaViTriK(NODE **head, int k) {
+void xoaK(NODE *&head, int k) {
 	if (k < 1) {
-		cout << "\nKhong ton tai vi tri K";
 		return;
 	}
-	NODE *temp = *head;
+	NODE *temp = head;
 	for (int i = 1; i < k; i++) {
 		if (temp->next == NULL) {
 			cout << "\nVi tri vuot qua do dai danh sach";
@@ -156,18 +116,20 @@ int main() {
     for (int i = 1; i <= n; i++) {
         int x;
         cout << "Nhap phan tu thu " << i << ": "; cin >> x;
-        pushFront(&a, x);
+        pushAfter(a, x);
     }
     
-    cout << "\nDanh sach truoc khi xoa: ";
+    cout << "\nDanh sach truoc khi chinh sua: ";
     scan(a);
 
-    cout << "\nXoa vi tri 4...";
-    xoaViTriK(&a, 4);
+    cout << "\nAdd gia tri 5 sau vi tri thu 4: ";
+    insertAfterK(a, 4, 5);
+    scan(a);
     
-    cout << "\nDanh sach sau khi xoa: ";
+    cout << "\nXoa vi tru thu 3: ";
+    xoaK(a,3);
     scan(a);
-
+    
     search(a, 5);
 
     return 0;

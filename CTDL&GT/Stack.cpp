@@ -1,53 +1,72 @@
 #include <iostream>
 using namespace std;
 
-struct Stack {
-	int data[50];
-	int top;
+class stack {
+	private:
+		int max;
+		int top;
+		int *arr;
+	public:
+		stack(int size) {
+			arr = new int[size];
+			max = size;
+			top = -1;
+		}
+		bool isEmpty() {
+			if (top == -1) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		bool isFull() {
+			if (top == max-1) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		bool push(int x) {
+			if (!isFull()) {
+				top++;
+				arr[top] = x;
+				return true;
+			} else {
+				return false;
+			}
+		}
+		bool pop() {
+			if (!isEmpty()) {
+				top--;
+				return true;
+			} else {
+				return false;
+			}
+		}
+		int arr_top() {
+			if(isEmpty()) {
+				cout << "Stack rong";
+				return -1;
+			} else {
+				return arr[top];
+			}
+		}
 };
-
-void Init(Stack &s) {
-	s.top = -1;
-}
-
-bool IsFull(Stack &s) {
-	return s.top == 50 - 1;
-}
-
-bool IsEmpty(Stack &s) {
-	return s.top == -1;
-}
-
-void Push(Stack &s, int x) {
-	if (IsFull(s)) {
-		cout << "Stack is full!";
-		return;
-	}
-	s.data[++s.top] = x;
-}
-
-int Pop(Stack &s) {
-	if (IsEmpty(s)) {
-		cout << "Stack is empty";
-		return -1;
-	}
-	return s.data[s.top--];
-}
 
 void DecimalToBinary(int &n) {
 	if (n < 100) {
 		cout << "Vui long nhap so co 3 chu so!";
 		return;
 	}
-	Stack s;
-	Init(s); // Khoi tao stack s
+	stack ds(20);
 	while (n > 0) {
-		Push(s,n%2);
+		ds.push(n%2);
 		n = n/2;
 	}
 	cout << "Day so nhi phan la: ";
-	while (!IsEmpty(s)) {
-		cout << Pop(s);
+	while (!ds.isEmpty()) {
+		cout << ds.arr_top();
+		ds.pop();
 	}
 }
 

@@ -1,68 +1,70 @@
 #include <iostream>
 using namespace std;
 
-struct BTNode {
+struct BTN{
 	int data;
-	BTNode *left;
-	BTNode *right;
+	BTN *left;
+	BTN *right;
 };
 
-BTNode *makeNode(int x) {
-	BTNode *newNode = new BTNode();
+BTN *makeNode(int x) {
+	BTN *newNode = new BTN();
 	newNode->data = x;
-	newNode->left = NULL;
 	newNode->right = NULL;
+	newNode->left = NULL;
 	return newNode;
 }
 
-BTNode *insert(BTNode *root, int x) {
+BTN *insert(BTN *root, int x) {
 	if (root == NULL) {
 		return makeNode(x);
-	}
-	if (x < root->data) {
-		root->left = insert(root->left, x);
-	} else if (x > root->data) {
-		root->right = insert(root->right, x);
 	} else {
-		cout << "Da ton tai gia tri nay trong cay!" << endl;
+		if (x > root->data) {
+			root->right = insert(root->right,x);
+		} else if (x < root->data) {
+			root->left = insert(root->left,x);
+		} else {
+			cout << "Gia tri da ton tai";
+			return root;
+		}
 	}
-	return root;
 }
 
-BTNode *find(BTNode *root, int x) {
+BTN *find(BTN *root, int x) {
 	if (root == NULL) {
 		return NULL;
-	}
-	if (x < root->data) {
-		return find(root->left, x);
-	} else if (x > root->data) {
-		return find(root->right, x);
 	} else {
-		return root;
+		if (x > root->data) {
+			return find(root->right,x);
+		} else if (x < root->data) {
+			return find(root->left,x);
+		} else {
+			return root;
+		}
 	}
 }
 
-BTNode *findMin(BTNode *root) {
+int findMax(BTN *root) {
 	if (root == NULL) {
-		return NULL;
-	}
-	while (root->left != NULL) {
-		root = root->left;
-	}
-	return root;
-}
-
-BTNode *findMax(BTNode *root) {
-	if (root == NULL) {
-		return NULL;
+		return -1;
 	}
 	while (root->right != NULL) {
 		root = root->right;
 	}
-	return root;
+	return root->data;
 }
 
-void preOrder(BTNode *root) {
+int findMin(BTN *root) {
+	if (root == NULL) {
+		return -1;
+	}
+	while (root->left != NULL) {
+		root = root->left;
+	}
+	return root->data;
+}
+
+void preOrder(BTN *root) {
 	if (root != NULL) {
 		cout << root->data << " ";
 		preOrder(root->left);
@@ -70,18 +72,18 @@ void preOrder(BTNode *root) {
 	}
 }
 
-void inOder(BTNode *root) {
+void inOrder(BTN *root) {
 	if (root != NULL) {
-		inOder(root->left);
+		inOrder(root->left);
 		cout << root->data << " ";
-		inOder(root->right);
+		inOrder(root->right);
 	}
 }
 
-void postOder(BTNode *root) {
+void postOrder(BTN *root) {
 	if (root != NULL) {
-		postOder(root->left);
-		postOder(root->right);
+		postOrder(root->left);
+		postOrder(root->right);
 		cout << root->data << " ";
 	}
 }
@@ -93,7 +95,12 @@ int main() {
 	a = insert(a, 4);
 	a = insert(a, 7);
 	a = insert(a, 10);
-
+	a = insert(a, 20);
+	a = insert(a, 1);
+	a = insert(a, 18);
+	a = insert(a, 11);
+	a = insert(a, 17);
+	
 	cout << "\nKet qua duyet cay theo thu tu truoc la: ";
 	preOrder(a);
 	cout << "\nKet qua duyet cay theo thu tu giua la: ";
@@ -111,4 +118,3 @@ int main() {
 	
 	return 0;
 }
-
