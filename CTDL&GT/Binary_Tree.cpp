@@ -25,8 +25,8 @@ BTN *insert(BTN *root, int x) {
 			root->left = insert(root->left,x);
 		} else {
 			cout << "Gia tri da ton tai";
-			return root;
 		}
+		return root;
 	}
 }
 
