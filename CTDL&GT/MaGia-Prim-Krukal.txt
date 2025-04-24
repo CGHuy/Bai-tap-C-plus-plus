@@ -1,4 +1,4 @@
------------------------Chu Thich--------------------------
+-----------------------Chú Thích--------------------------
 G : Là đồ thị cần xét
 V (Vertices): Tập các đỉnh (nodes) của đồ thị.
 E (Edges): Tập các cạnh (edges).
@@ -11,35 +11,34 @@ e = (u, v) Là một cạnh nối giữa đỉnh u và v, thuộc tập cạnh E
 
 -----------------------------------------------------------
 
-Thuật toán Prim(G = (V, E)){
+Thuật toán Prim (G = (V, E)) {
     T = ∅                          // Tập cạnh khung đang xây dựng
     U = {u} với u ∈ V              // Chọn đỉnh xuất phát bất kỳ
     while (|T| < n - 1) and (E ≠ ∅) 
     {
         Chọn cạnh e = (u, v) ∈ E sao cho: u ∈ U, v ∉ U và e có trọng số nhỏ nhất
-        E = E \ {e}               // Loại e ra khỏi tập cạnh
-        If(T ∪ {e} không tạo nên chu trình)
+        If (T ∪ {e} không tạo nên chu trình)
         {
             T = T ∪ {e}               // Thêm e vào cây khung
             U = U ∪ {v}               // Thêm đỉnh mới vào tập đã xét
         }
+        E = E \ {e}               // Loại e ra khỏi tập cạnh
     }
-
     return T
 }
 
 --------------------------------------------------------------
 
-Thuật toán Krukarl(G = (V, E)){
+Thuật toán Krukarl(G = (V, E)) {
     T = ∅                                  // Tập cạnh cây khung
     while (|T| < n - 1) and (E ≠ ∅)
     {
         Chọn cạnh e ∈ E là cạnh có độ dài nhỏ nhất
-        E = E \ {e}                         // Loại e ra khỏi tập cạnh
-        If(T ∪ {e} không tạo nên chu trình)
+        If (T ∪ {e} không tạo nên chu trình)
         {
             T = T ∪ {e}                     // Thêm e vào cây khung
         }
+        E = E \ {e}                         // Loại e ra khỏi tập cạnh
     }
 
     return T

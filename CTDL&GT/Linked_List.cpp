@@ -27,33 +27,14 @@ void pushFront(NODE *&head, int x) {
 	head = newNode;
 }
 
-void pushAfter(NODE *&head, int x) {
-	NODE *newNode = makeNode(x);
-	if (head == NULL) {
-		head = newNode;
-		return;
-	}
-	NODE *temp = head;
-	while (temp->next != NULL) {
-		temp = temp->next;
-	}
-	temp->next = newNode;
-	newNode->next = NULL;
-}
-
 void insertAfter(NODE *&head, NODE *p, int x) {
 	NODE *newNode = makeNode(x);
 	if (p == NULL) {
 		cout << "\nKhong the them duoc";
 		return;
 	}
-	if (head == NULL) { // list chua co phan tu
-		pushFront(head,x);
-		return;
-	} else { // them newNode
-		newNode->next = p->next;
-		p->next = newNode;
-	}
+	newNode->next = p->next;
+	p->next = newNode;	
 }
 
 void insertAfterK(NODE *&head, int k, int x) {
@@ -116,7 +97,7 @@ int main() {
     for (int i = 1; i <= n; i++) {
         int x;
         cout << "Nhap phan tu thu " << i << ": "; cin >> x;
-        pushAfter(a, x);
+        pushFront(a, x);
     }
     
     cout << "\nDanh sach truoc khi chinh sua: ";
@@ -130,7 +111,5 @@ int main() {
     xoaK(a,3);
     scan(a);
     
-    search(a, 5);
-
     return 0;
 }
